@@ -9,7 +9,12 @@ verify_ssl = true
 pytest = "*"
 black = "*"
 mypy = "*"
-pylint = "*"
+flake8 = "*"
+pydocstyle = "*"
+mock = "*"
 
 [requires]
 python_version = "3.7"
+
+[pipenv]
+allow_prereleases = true

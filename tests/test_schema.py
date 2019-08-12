@@ -1,21 +1,7 @@
-from dataclasses import dataclass
-from typing import Any
-
 import pytest
 
-from configurator import Schema, Template, instanciate_schema_from_template
-
-
-@dataclass
-class TestSimpleSchema(Schema):
-    a: Any
-    b: Any
-
-
-@dataclass
-class TestNestedSchema(Schema):
-    simple: Any
-    nested: TestSimpleSchema
+from configurator import Template, instanciate_schema_from_template
+from tests.common import TestNestedSchema, TestSimpleSchema
 
 
 @pytest.mark.parametrize(
