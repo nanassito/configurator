@@ -25,7 +25,6 @@ def test_order_of_materialization():
     configset_modifier = create_and_attach_mock(mock_manager, "configset_modifier")
     configset_validator = create_and_attach_mock(mock_manager, "configset_validator")
     configset = ConfigSet(
-        root_directory="This/path/is/not/used/here",
         configs=[config],
         configset_modifiers=[configset_modifier],
         configset_validators=[configset_validator],
@@ -54,11 +53,7 @@ def test_order_of_materialization():
 def test_materialization_failures(config_validator, configset_validator):
     writer = Mock()
     config = Mock(writer=writer, validate=Mock(side_effect=config_validator))
-    configset = ConfigSet(
-        root_directory="This/path/is/not/used/here",
-        configs=[config],
-        configset_validators=[configset_validator],
-    )
+    configset = ConfigSet(configs=[config], configset_validators=[configset_validator])
 
     with pytest.raises(TestException):
         configset.materialize()

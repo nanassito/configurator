@@ -131,21 +131,14 @@ class Config(object):
 class ConfigSet(object):
     """A group of configurations that are tied together."""
 
-    __slots__ = [
-        "configs",
-        "configset_modifiers",
-        "configset_validators",
-        "root_directory",
-    ]
+    __slots__ = ["configs", "configset_modifiers", "configset_validators"]
 
     def __init__(
         self: "ConfigSet",
-        root_directory: str,
         configs: List[Config],
         configset_modifiers: List[Callable[[List[Schema]], None]] = None,
         configset_validators: List[Callable[[List[Schema]], None]] = None,
     ):
-        self.root_directory = root_directory
         self.configs = configs
         self.configset_modifiers = configset_modifiers or []
         self.configset_validators = configset_validators or []

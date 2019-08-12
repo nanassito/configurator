@@ -8,7 +8,7 @@ class TestException(Exception):
     pass
 
 
-@dataclass
+@dataclass(unsafe_hash=True)
 class TestSimpleSchema(Schema):
     a: Any
     b: Any
