@@ -2,8 +2,12 @@ from dataclasses import fields, is_dataclass
 from typing import Any, Callable, Dict
 import json
 import os
+import logging
 
 from configurator import Schema
+
+
+LOGGER = logging.getLogger(__file__)
 
 
 def dict_formatter(config: Schema) -> Dict[str, Any]:
@@ -75,6 +79,9 @@ def file_writer(config: Schema, formatter: Callable[..., str], path: str) -> Non
     In [4]: ConfigSet(configs=[config]).materialize()
     """
     data = formatter(config)
-    os.makedirs(os.path.dirname(path), exist_ok=True)
+    directory = os.path.dirname(path)
+    LOGGER.info(f"Making sure the directory '{directory}' exists.")
+    os.makedirs(directory, exist_ok=True)
     with open(path, "w") as fd:
+        LOGGER.info(f"Writting out configuration in '{path}'.")
         fd.write(data)

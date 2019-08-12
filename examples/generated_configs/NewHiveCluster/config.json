@@ -1,0 +1,33 @@
+{
+    "datadog_settings": {
+        "datadog_api_token": "",
+        "datadog_app_token": ""
+    },
+    "disallow_cluster_termination": true,
+    "ec2_settings": {
+        "aws_preferred_availability_zone": "Any",
+        "aws_region": "us-east-1",
+        "bastion_node_port": null,
+        "bastion_node_public_dns": null,
+        "bastion_node_user": null,
+        "compute_external_id": "SOMEUNIQID",
+        "compute_role_arn": "arn:aws:iam::0987654321:role/my-fancy-role",
+        "compute_validated": true,
+        "instance_tenancy": null,
+        "master_elastic_ip": null,
+        "role_instance_profile": null,
+        "subnet_id": "subnet-01234567,subnet-89abcdef,subnet-fedcba98,subnet-7654321",
+        "use_account_compute_creds": false,
+        "vpc_id": "vpc-01234567"
+    },
+    "enable_ganglia_monitoring": true,
+    "engine_config": {
+        "hive_settings": {
+            "hive_version": "2.1.1",
+            "is_hs2": true,
+            "is_metadata_cache_enabled": false,
+            "overrides": "ref://hive-overrides.properties"
+        },
+        "type": "hadoop2"
+    }
+}

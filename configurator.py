@@ -1,5 +1,10 @@
+import logging
 from dataclasses import dataclass, fields
 from typing import Callable, List, Type
+
+
+LOGGER = logging.getLogger(__file__)
+logging.basicConfig(level=logging.INFO)
 
 
 @dataclass
@@ -21,6 +26,7 @@ class Template(object):
 
     def __init__(self: "Template", **kwargs) -> None:
         self.fields = list(kwargs.keys())
+        LOGGER.debug(f"New template with keys: {self.fields}")
         for key, value in kwargs.items():
             setattr(self, key, value)
 
@@ -46,6 +52,7 @@ class Template(object):
                 getattr(self, field).merge_from(field_value)
             else:
                 setattr(self, field, field_value)
+        LOGGER.debug(f"Merge templates, now have keys: {self.fields}")
 
 
 UNSET = "__CONFIGURATOR_UNSET_FIELD"
@@ -150,6 +157,7 @@ class ConfigSet(object):
         modifiers. We will then validate each config individually before validating
         the configset. Finally the configs will be written out.
         """
+        LOGGER.info("Starting materialization.")
         for config in self.configs:
             config.resolve()
         for modifier in self.configset_modifiers:
