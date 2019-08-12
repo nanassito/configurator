@@ -51,3 +51,33 @@ def test_resolve(schema, templates, modifiers, expected):
     assert config.output == expected
     for modifier in modifiers:
         assert modifier.call_args == ((config.output,), {})
+
+
+def test_writer_is_called():
+    writer = Mock()
+    config = Config(
+        schema=TestSimpleSchema,
+        writer=writer,
+        templates=[Template(a=1, b=2)],
+        config_modifiers=[],
+        config_validators=[],
+    )
+    config.resolve()
+    config.write()
+
+    assert writer.call_args == ((TestSimpleSchema(a=1, b=2),), {})
+
+
+def test_fail_if_writer_is_called_before_resolve():
+    writer = Mock()
+    config = Config(
+        schema=TestSimpleSchema,
+        writer=writer,
+        templates=[Template(a=1, b=2)],
+        config_modifiers=[],
+        config_validators=[],
+    )
+
+    with pytest.raises(AttributeError):
+        config.write()
+    assert not writer.called

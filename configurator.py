@@ -115,6 +115,10 @@ class Config(object):
         for modifier in self.config_modifiers:
             modifier(self.output)
 
+    def write(self: "Config") -> None:
+        """Write the config file out using the provided writer."""
+        self.writer(self.output)
+
 
 if __name__ == "__main__":
     raise Exception("Configurator is not meant to be run directly.")
