@@ -4,6 +4,10 @@ from typing import Any
 from configurator import Schema
 
 
+class TestException(Exception):
+    pass
+
+
 @dataclass
 class TestSimpleSchema(Schema):
     a: Any

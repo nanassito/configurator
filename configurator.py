@@ -128,5 +128,46 @@ class Config(object):
         self.writer(self.output)
 
 
+class ConfigSet(object):
+    """A group of configurations that are tied together."""
+
+    __slots__ = [
+        "configs",
+        "configset_modifiers",
+        "configset_validators",
+        "root_directory",
+    ]
+
+    def __init__(
+        self: "ConfigSet",
+        root_directory: str,
+        configs: List[Config],
+        configset_modifiers: List[Callable[[List[Schema]], None]] = None,
+        configset_validators: List[Callable[[List[Schema]], None]] = None,
+    ):
+        self.root_directory = root_directory
+        self.configs = configs
+        self.configset_modifiers = configset_modifiers or []
+        self.configset_validators = configset_validators or []
+
+    def materialize(self: "ConfigSet") -> None:
+        """Generate all configs in this set and write them out.
+        
+        This will first resolve all the configurations, then apply the configset
+        modifiers. We will then validate each config individually before validating
+        the configset. Finally the configs will be written out.
+        """
+        for config in self.configs:
+            config.resolve()
+        for modifier in self.configset_modifiers:
+            modifier([config.output for config in self.configs])
+        for config in self.configs:
+            config.validate()
+        for validator in self.configset_validators:
+            validator([config.output for config in self.configs])
+        for config in self.configs:
+            config.write()
+
+
 if __name__ == "__main__":
     raise Exception("Configurator is not meant to be run directly.")

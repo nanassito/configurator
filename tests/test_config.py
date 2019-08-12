@@ -1,8 +1,8 @@
-from mock import Mock
 import pytest
+from mock import Mock, call
 
 from configurator import Config, Template
-from tests.common import TestNestedSchema, TestSimpleSchema
+from tests.common import TestException, TestNestedSchema, TestSimpleSchema
 
 
 @pytest.mark.parametrize(
@@ -51,7 +51,7 @@ def test_resolve(schema, templates, modifiers, expected):
 
     assert config.output == expected
     for modifier in modifiers:
-        assert modifier.call_args == ((config.output,), {})
+        assert modifier.call_args == call(config.output)
 
 
 def test_writer_is_called():
@@ -67,7 +67,7 @@ def test_writer_is_called():
 
     config.write()
 
-    assert writer.call_args == ((TestSimpleSchema(a=1, b=2),), {})
+    assert writer.call_args == call(TestSimpleSchema(a=1, b=2))
 
 
 def test_fail_if_writer_is_called_before_resolve():
@@ -106,11 +106,7 @@ def test_validate_success(validators):
     config.validate()
 
     for validator in validators:
-        assert validator.call_args == ((TestSimpleSchema(a=1, b=2),), {})
-
-
-class TestException(Exception):
-    pass
+        assert validator.call_args == call(TestSimpleSchema(a=1, b=2))
 
 
 @pytest.mark.parametrize(
