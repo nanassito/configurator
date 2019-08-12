@@ -145,7 +145,7 @@ class ConfigSet(object):
 
     def materialize(self: "ConfigSet") -> None:
         """Generate all configs in this set and write them out.
-        
+
         This will first resolve all the configurations, then apply the configset
         modifiers. We will then validate each config individually before validating
         the configset. Finally the configs will be written out.

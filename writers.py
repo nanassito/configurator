@@ -1,5 +1,5 @@
 from dataclasses import fields, is_dataclass
-from typing import Any, Dict
+from typing import Any, Callable, Dict
 import json
 import os
 
@@ -41,18 +41,40 @@ def dict_formatter(config: Schema) -> Dict[str, Any]:
     return data
 
 
-def json_writer(config: Schema, path: str) -> None:
-    """Write configuration in json format.
+def json_formatter(config: Schema, sort_keys=True, indent=4, **kwargs) -> str:
+    return json.dumps(
+        dict_formatter(config), sort_keys=sort_keys, indent=indent, **kwargs
+    )
+
+
+def properties_formatter(config: Schema) -> str:
+    data = {}
+    for field in fields(config):
+        field_value = getattr(config, field.name)
+        if isinstance(field_value, bool):
+            value = str(field_value).lower()
+        else:
+            value = str(field_value)
+        data[field.name] = value
+    return "\n".join([f"{key}={value}" for key, value in sorted(data.items())])
+
+
+def file_writer(config: Schema, formatter: Callable[..., str], path: str) -> None:
+    """Write configuration out to a file
 
     You probably want to use this in conjuction with `partial()` to define the
     path of where to write the configuration. For instance:
 
     In [1]: from functools import partial
-    In [2]: writer = partial(json_writer, path="/tmp/test.json")
+    In [2]: writer = partial(
+       ...:     file_writer,
+       ...:     formatter=json_formatter,
+       ...:     path="/tmp/test.json",
+       ...: )
     In [3]: config = Config(Schema, writer, templates)
     In [4]: ConfigSet(configs=[config]).materialize()
     """
-    data = dict_formatter(config)
+    data = formatter(config)
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w") as fd:
-        json.dump(data, fd)
+        fd.write(data)

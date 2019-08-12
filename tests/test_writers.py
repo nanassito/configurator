@@ -1,5 +1,5 @@
 import pytest
-from writers import dict_formatter
+from writers import dict_formatter, properties_formatter
 
 from tests.common import TestNestedSchema, TestSimpleSchema
 
@@ -38,3 +38,14 @@ from tests.common import TestNestedSchema, TestSimpleSchema
 )
 def test_dict_formatter(config, expected):
     assert dict_formatter(config) == expected
+
+
+@pytest.mark.parametrize(
+    ["config", "expected"],
+    [
+        (TestSimpleSchema(a=1, b="B"), "\n".join(["a=1", "b=B"])),
+        (TestSimpleSchema(a=1.0, b=False), "\n".join(["a=1.0", "b=false"])),
+    ]
+)
+def test_properties_formatter(config, expected):
+    assert properties_formatter(config) == expected
