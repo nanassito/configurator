@@ -115,6 +115,14 @@ class Config(object):
         for modifier in self.config_modifiers:
             modifier(self.output)
 
+    def validate(self: "Config") -> None:
+        """Apply all the validator on the config."""
+        assert (
+            getattr(self, "output") is not None
+        ), "This configuration has not been resolved yet."
+        for validator in self.config_validators:
+            validator(self.output)
+
     def write(self: "Config") -> None:
         """Write the config file out using the provided writer."""
         self.writer(self.output)

@@ -41,11 +41,12 @@ from tests.common import TestNestedSchema, TestSimpleSchema
 def test_resolve(schema, templates, modifiers, expected):
     config = Config(
         schema=schema,
-        writer=lambda x: x,
+        writer=Mock(),
         templates=templates,
         config_modifiers=modifiers,
         config_validators=[],
     )
+
     config.resolve()
 
     assert config.output == expected
@@ -63,6 +64,7 @@ def test_writer_is_called():
         config_validators=[],
     )
     config.resolve()
+
     config.write()
 
     assert writer.call_args == ((TestSimpleSchema(a=1, b=2),), {})
@@ -81,3 +83,61 @@ def test_fail_if_writer_is_called_before_resolve():
     with pytest.raises(AttributeError):
         config.write()
     assert not writer.called
+
+
+@pytest.mark.parametrize(
+    ["validators"],
+    [
+        ([],),  # No validators
+        ([Mock()],),  # Single validator
+        ([Mock(), Mock(), Mock()],),  # Multiple validators
+    ],
+)
+def test_validate_success(validators):
+    config = Config(
+        schema=TestSimpleSchema,
+        writer=Mock(),
+        templates=[Template(a=1, b=2)],
+        config_modifiers=[],
+        config_validators=validators,
+    )
+    config.resolve()
+
+    config.validate()
+
+    for validator in validators:
+        assert validator.call_args == ((TestSimpleSchema(a=1, b=2),), {})
+
+
+class TestException(Exception):
+    pass
+
+
+@pytest.mark.parametrize(
+    ["validators"],
+    [
+        ([Mock(side_effect=TestException)],),  # Unique fails
+        ([Mock(side_effect=TestException), Mock(), Mock()],),  # First fails
+        ([Mock(), Mock(side_effect=TestException), Mock()],),  # Any fails
+        (
+            # All fails
+            [
+                Mock(side_effect=TestException),
+                Mock(side_effect=TestException),
+                Mock(side_effect=TestException),
+            ],
+        ),
+    ],
+)
+def test_validate_failure(validators):
+    config = Config(
+        schema=TestSimpleSchema,
+        writer=Mock(),
+        templates=[Template(a=1, b=2)],
+        config_modifiers=[],
+        config_validators=validators,
+    )
+    config.resolve()
+
+    with pytest.raises(TestException):
+        config.validate()
