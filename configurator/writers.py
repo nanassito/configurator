@@ -84,4 +84,4 @@ def file_writer(config: Schema, formatter: Callable[..., str], path: str) -> Non
     os.makedirs(directory, exist_ok=True)
     with open(path, "w") as fd:
         LOGGER.info(f"Writting out configuration in '{path}'.")
-        fd.write(data)
+        fd.write(data + "\n")
