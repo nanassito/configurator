@@ -1,6 +1,6 @@
 import pytest
 
-from configurator import Template, instanciate_schema_from_template
+from configurator.compiler import Template, instanciate_schema_from_template
 from tests.common import TestNestedSchema, TestSimpleSchema
 
 

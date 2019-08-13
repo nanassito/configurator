@@ -1,6 +1,6 @@
 import pytest
 
-from configurator import Template
+from configurator.compiler import Template
 
 
 @pytest.mark.parametrize(

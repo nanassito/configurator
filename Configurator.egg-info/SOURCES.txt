@@ -1,0 +1,17 @@
+README.md
+setup.py
+Configurator.egg-info/PKG-INFO
+Configurator.egg-info/SOURCES.txt
+Configurator.egg-info/dependency_links.txt
+Configurator.egg-info/top_level.txt
+examples/__init__.py
+examples/hadoop_clusters.py
+examples/hadoop_templates.py
+examples/hadoop_types.py
+tests/__init__.py
+tests/common.py
+tests/test_config.py
+tests/test_configset.py
+tests/test_schema.py
+tests/test_template.py
+tests/test_writers.py

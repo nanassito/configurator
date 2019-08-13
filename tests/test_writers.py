@@ -1,5 +1,5 @@
 import pytest
-from writers import dict_formatter, properties_formatter
+from configurator.writers import dict_formatter, properties_formatter
 
 from tests.common import TestNestedSchema, TestSimpleSchema
 

@@ -1,7 +1,7 @@
 import pytest
 from mock import Mock, call
 
-from configurator import Config, Template
+from configurator.compiler import Config, Template
 from tests.common import TestException, TestNestedSchema, TestSimpleSchema
 
 

@@ -12,6 +12,7 @@ mypy = "*"
 flake8 = "*"
 pydocstyle = "*"
 mock = "*"
+setuptools = "*"
 
 [requires]
 python_version = "3.7"

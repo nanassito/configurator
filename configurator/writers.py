@@ -4,7 +4,7 @@ import json
 import os
 import logging
 
-from configurator import Schema
+from configurator.compiler import Schema
 
 
 LOGGER = logging.getLogger(__file__)

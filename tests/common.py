@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Any
 
-from configurator import Schema
+from configurator.compiler import Schema
 
 
 class TestException(Exception):
