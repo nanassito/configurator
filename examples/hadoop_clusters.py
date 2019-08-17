@@ -1,13 +1,13 @@
 import os
 from functools import partial
 
-from configurator import Config, ConfigSet, Template
+from configurator.compiler import Config, ConfigSet, Template
 from examples.hadoop_types import ClusterConfigSchema
 from examples.hadoop_templates import (
     base_hadoop_cluster_config_template,
     hive_cluster_config,
 )
-from writers import file_writer, json_formatter
+from configurator.writers import file_writer
 
 
 CONFIG_ROOT = os.path.join(os.path.dirname(__file__), "generated_configs")
@@ -15,9 +15,7 @@ CONFIG_ROOT = os.path.join(os.path.dirname(__file__), "generated_configs")
 
 def get_config_json_writer(cluster_name: str) -> None:
     return partial(
-        file_writer,
-        formatter=json_formatter,
-        path=os.path.join(CONFIG_ROOT, cluster_name, "config.json"),
+        file_writer, path=os.path.join(CONFIG_ROOT, cluster_name, "config.json")
     )
 
 

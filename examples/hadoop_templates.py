@@ -1,4 +1,4 @@
-from configurator import Template
+from configurator.compiler import Template
 
 
 base_hadoop_cluster_config_template = Template(

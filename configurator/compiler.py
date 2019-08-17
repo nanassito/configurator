@@ -1,20 +1,12 @@
 import logging
-from dataclasses import dataclass, fields
+from dataclasses import fields
 from typing import Callable, List, Type
+
+from configurator.schemas import Schema
 
 
 LOGGER = logging.getLogger(__file__)
 logging.basicConfig(level=logging.INFO)
-
-
-@dataclass
-class Schema(object):
-    """Define the fields the final configuration is expected to have.
-
-    You should not be instanciating this yourself.
-    """
-
-    pass
 
 
 class Template(object):

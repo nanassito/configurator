@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Any
 
-from configurator.compiler import Schema
+from configurator.schemas import DictSchema
 
 
 class TestException(Exception):
@@ -9,12 +9,12 @@ class TestException(Exception):
 
 
 @dataclass(unsafe_hash=True)
-class TestSimpleSchema(Schema):
+class TestSimpleSchema(DictSchema):
     a: Any
     b: Any
 
 
 @dataclass
-class TestNestedSchema(Schema):
+class TestNestedSchema(DictSchema):
     simple: Any
     nested: TestSimpleSchema

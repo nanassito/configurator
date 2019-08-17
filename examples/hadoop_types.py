@@ -1,11 +1,11 @@
 from dataclasses import dataclass
 from typing import Dict, Optional
 
-from configurator import Schema
+from configurator.schemas import DictSchema, JsonSchema
 
 
 @dataclass
-class HiveSettingsSchema(Schema):
+class HiveSettingsSchema(DictSchema):
     hive_version: str
     is_hs2: bool
     is_metadata_cache_enabled: bool
@@ -13,13 +13,13 @@ class HiveSettingsSchema(Schema):
 
 
 @dataclass
-class EngineConfigSchema(Schema):
+class EngineConfigSchema(DictSchema):
     hive_settings: HiveSettingsSchema
     type: str
 
 
 @dataclass
-class EC2SettingsSchema(Schema):
+class EC2SettingsSchema(DictSchema):
     aws_preferred_availability_zone: str
     aws_region: str
     bastion_node_port: Optional[str]
@@ -37,7 +37,7 @@ class EC2SettingsSchema(Schema):
 
 
 @dataclass
-class ClusterConfigSchema(Schema):
+class ClusterConfigSchema(JsonSchema):
     datadog_settings: Dict[str, str]
     disallow_cluster_termination: bool
     ec2_settings: EC2SettingsSchema
